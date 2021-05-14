@@ -1,14 +1,15 @@
 ARG ARCH=amd64
 # x86_64 or aarch64
 ARG ARCH2=x86_64
-FROM ${ARCH}/go-ide
+FROM go-ide:${ARCH}-latest
 
 ARG TERRAFORM_VERSION=0.15.1
 ARG ARCH=arm64
 USER root
 
-RUN apt install -y python3-pip
+RUN apt install -y python3-pip apt-transport-https jsonnet
 
+#install terraform
 RUN wget --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip
 
 RUN \
@@ -21,10 +22,37 @@ RUN \
 	# Check that it's installed
 	terraform --version
 
+#install aws cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH2}.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install
+
+#install kubectl
+RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list && \
+    apt-get update && apt-get install -y kubectl && \
+    echo "source <(kubectl completion zsh)" >> /home/dev/.zshrc
+
+#install helm
+RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - && \
+    echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list && \
+    apt-get update && apt-get install helm && \
+    echo "source <(helm completion zsh)" >> /home/dev/.zshrc
+
+#install istioctl
+RUN curl -sL https://istio.io/downloadIstioctl | TARGET_ARCH=${ARCH2} sh - && \
+    mv $HOME/.istioctl/bin/istioctl /usr/bin/istioctl
+
+#install argo
+RUN curl -sLO https://github.com/argoproj/argo/releases/download/v3.0.3/argo-linux-${ARCH}.gz && \
+    gunzip argo-linux-${ARCH}.gz && \
+    chmod +x argo-linux-${ARCH} && \
+    mv ./argo-linux-${ARCH} /usr/bin/argo && \
+    echo "source <(argo completion zsh)" >> /home/dev/.zshrc
+
 RUN rm /home/dev/*.zip
+COPY aliases /home/dev/.aliases
+RUN echo "source $HOME/.aliases" >> /home/dev/.zshrc
 
 USER dev
 CMD "exec zsh"

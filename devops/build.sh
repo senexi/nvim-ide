@@ -17,4 +17,4 @@ then
 fi
 
 echo "using arch $ARCH $ARCH2"
-$BUILDER build --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2  -t $TARGET:latest -f ./Containerfile .
+$BUILDER build --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2  -t $TARGET:$ARCH-latest -f ./Containerfile .

@@ -9,7 +9,7 @@ help: ## This help.
 build_base: ## Build the container
 	cd base && bash build.sh
 build_devops: ## Build the container
-	cd devops && bash build_devops.sh
+	cd devops && bash build.sh
 
 build: build_base build_devops
 	echo "build all"

@@ -10,4 +10,6 @@ then
     BUILDER="podman"
 fi
 echo "using arch $ARCH"
-$BUILDER push $REPO/$TARGET:$ARCH-latest
+IMAGE=$TARGET:$ARCH-latest
+
+$BUILDER push $IMAGE $REPO/$IMAGE

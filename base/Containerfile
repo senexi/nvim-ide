@@ -22,7 +22,7 @@ RUN apt-get update -y && apt-get -y install vim \
     jq \
     yarn
 
-RUN wget -c https://dl.google.com/go/go1.16.3.linux-arm64.tar.gz -O - | tar -xz -C /usr/local && \
+RUN wget -c https://dl.google.com/go/go1.16.3.linux-${ARCH}.tar.gz -O - | tar -xz -C /usr/local && \
     mkdir /go && \
     printf 'export GOPATH=/go \n\
 export GOBIN=$GOPATH/bin \n\

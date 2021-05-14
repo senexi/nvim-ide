@@ -1,13 +1,10 @@
-# nvim go IDE in Docker
+# devops environment
 
 ```
-#build with 
-#--format docker is important due to comppability issues with k8s
-podman build --format docker -t senexi/go-vim:latest .
 
 #run with
-podman run -it -w /data -v $(pwd):/data --userns=keep-id --rm --net=host senexi/go-vim:latest /bin/zsh
+podman run -it -w /data -v $(pwd):/data --userns=keep-id --rm --net=host senexi/devops-ide:amd64-latest /bin/zsh
 
 #set alias
-alias vimgo='podman run -it -w /data -v $(pwd):/data --userns=keep-id --rm --net=host senexi/go-vim:latest /bin/zsh'
+alias devopside='podman run -it -w /data -v $(pwd):/data --userns=keep-id --rm --net=host senexi/devops-ide:amd64-latest /bin/zsh'
 ```
