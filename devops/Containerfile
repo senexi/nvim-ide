@@ -1,0 +1,31 @@
+ARG ARCH=amd64
+# x86_64 or aarch64
+ARG ARCH2=x86_64
+FROM ${ARCH}/go-ide
+
+ARG TERRAFORM_VERSION=0.15.1
+ARG ARCH=arm64
+USER root
+
+RUN apt install -y python3-pip
+
+RUN wget --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip
+
+RUN \
+	# Unzip
+	unzip terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip && \
+	# Move to local bin
+	mv terraform /usr/local/bin/ && \
+	# Make it executable
+	chmod +x /usr/local/bin/terraform && \
+	# Check that it's installed
+	terraform --version
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH2}.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install
+RUN rm /home/dev/*.zip
+
+USER dev
+CMD "exec zsh"
+
