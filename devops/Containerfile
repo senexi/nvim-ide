@@ -1,7 +1,9 @@
 ARG ARCH=amd64
-# x86_64 or aarch64
-ARG ARCH2=x86_64
 FROM go-ide:${ARCH}-latest
+
+ARG ARCH=amd64
+ARG ARCH2=x86_64
+ARG ARCH3
 
 ARG TERRAFORM_VERSION=0.15.4
 ARG ARCH=arm64
@@ -10,11 +12,11 @@ USER root
 RUN apt install -y python3-pip apt-transport-https jsonnet
 
 #install terraform
-RUN wget --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip
+RUN wget --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH3}.zip
 
 RUN \
 	# Unzip
-	unzip terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip && \
+	unzip terraform_${TERRAFORM_VERSION}_linux_${ARCH3}.zip && \
 	# Move to local bin
 	mv terraform /usr/local/bin/ && \
 	# Make it executable
@@ -44,16 +46,17 @@ RUN curl -sL https://istio.io/downloadIstioctl | TARGET_ARCH=${ARCH2} sh - && \
     mv $HOME/.istioctl/bin/istioctl /usr/bin/istioctl
 
 #install argo
-RUN curl -sLO https://github.com/argoproj/argo/releases/download/v3.0.3/argo-linux-${ARCH}.gz && \
-    gunzip argo-linux-${ARCH}.gz && \
-    chmod +x argo-linux-${ARCH} && \
-    mv ./argo-linux-${ARCH} /usr/bin/argo && \
+RUN curl -sLO https://github.com/argoproj/argo/releases/download/v3.0.3/argo-linux-${ARCH3}.gz && \
+    gunzip argo-linux-${ARCH3}.gz && \
+    chmod +x argo-linux-${ARCH3} && \
+    mv ./argo-linux-${ARCH3} /usr/bin/argo && \
     echo "source <(argo completion zsh)" >> /home/dev/.zshrc
 
 #install argocd
 ARG ARGOCD_VERSION=v2.0.1
-RUN curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH} && \
-    chmod +x /usr/local/bin/argocd
+RUN if [ "$ARCH3" = "amd64"] ; then curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH3} && \
+    chmod +x /usr/local/bin/argocd && \
+    echo "source <(argocd completion zsh)" >> /home/dev/.zshrc ; fi
 
 RUN rm /home/dev/*.zip
 COPY aliases /home/dev/.aliases

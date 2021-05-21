@@ -1,7 +1,9 @@
 # ARCH=arm64v8 or amd64
-ARG ARCH=amd64
-FROM ${ARCH}/ubuntu:groovy
+ARG ARCH
 
+FROM ${ARCH}/ubuntu:groovy
+ARG ARCH
+ARG ARCH3
 RUN apt-get update -y && apt-get -y install vim \
 	nodejs \
 	silversearcher-ag \
@@ -21,8 +23,7 @@ RUN apt-get update -y && apt-get -y install vim \
     zip \
     jq \
     yarn
-
-RUN wget -c https://dl.google.com/go/go1.16.3.linux-${ARCH}.tar.gz -O - | tar -xz -C /usr/local && \
+RUN wget -c https://dl.google.com/go/go1.16.4.linux-${ARCH3}.tar.gz -O - | tar -xz -C /usr/local && \
     mkdir /go && \
     printf 'export GOPATH=/go \n\
 export GOBIN=$GOPATH/bin \n\
