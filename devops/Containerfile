@@ -3,7 +3,7 @@ ARG ARCH=amd64
 ARG ARCH2=x86_64
 FROM go-ide:${ARCH}-latest
 
-ARG TERRAFORM_VERSION=0.15.1
+ARG TERRAFORM_VERSION=0.15.4
 ARG ARCH=arm64
 USER root
 
@@ -49,6 +49,11 @@ RUN curl -sLO https://github.com/argoproj/argo/releases/download/v3.0.3/argo-lin
     chmod +x argo-linux-${ARCH} && \
     mv ./argo-linux-${ARCH} /usr/bin/argo && \
     echo "source <(argo completion zsh)" >> /home/dev/.zshrc
+
+#install argocd
+ARG ARGOCD_VERSION=v2.0.1
+RUN curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH} && \
+    chmod +x /usr/local/bin/argocd
 
 RUN rm /home/dev/*.zip
 COPY aliases /home/dev/.aliases
