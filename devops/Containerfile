@@ -54,7 +54,7 @@ RUN curl -sLO https://github.com/argoproj/argo/releases/download/v3.0.3/argo-lin
 
 #install argocd
 ARG ARGOCD_VERSION=v2.0.1
-RUN if [ "$ARCH3" = "amd64"] ; then curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH3} && \
+RUN if [ "$ARCH" = "amd64" ] ; then curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH3} && \
     chmod +x /usr/local/bin/argocd && \
     echo "source <(argocd completion zsh)" >> /home/dev/.zshrc ; fi
 

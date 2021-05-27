@@ -66,6 +66,19 @@ RUN go get -u google.golang.org/protobuf/cmd/protoc-gen-go && \
     go get -u -v github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc && \
     go get -u github.com/cweill/gotests/...
 
+
+RUN curl -s "https://get.sdkman.io" | zsh
+ARG JAVA_VERSION="11.0.11-zulu"
+ARG KOTLIN_VERSION="1.4.31"
+ARG MAVEN_VERSION="3.6.3"
+ARG GRADLE_VERSION="6.8.3"
+RUN zsh -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
+    yes | sdk install java $JAVA_VERSION && \
+    yes | sdk install kotlin $KOTLIN_VERSION && \
+    yes | sdk install maven $MAVEN_VERSION && \
+    yes | sdk install gradle $GRADLE_VERSION" 
+ENV JAVA_HOME="$HOME/.sdkman/candidates/java/current"
+
 #configure git to use ssh instead of https
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/powerlevel10k && \

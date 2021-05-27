@@ -19,4 +19,4 @@ fi
 
 echo "using arch $ARCH $ARCH2"
 #$BUILDER build --no-cache=true --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2  -t $TARGET:$ARCH-latest -f ./Containerfile .
-$BUILDER build --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2 --build-arg ARCH3=$ARCH3 -t $TARGET:$ARCH-latest -f ./Containerfile .
+$BUILDER build --format docker --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2 --build-arg ARCH3=$ARCH3 -t $TARGET:$ARCH-latest -f ./Containerfile .
