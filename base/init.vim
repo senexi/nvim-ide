@@ -161,7 +161,7 @@ set fileformats=unix,dos,mac
 if exists('$SHELL')
     set shell=$SHELL
 else
-    set shell=/bin/sh
+    set shell=/usr/bin/zsh
 endif
 
 " session management
@@ -451,6 +451,8 @@ vnoremap K :m '<-2<CR>gv=gv
 "" Open current line on GitHub
 nnoremap <Leader>o :.Gbrowse<CR>
 
+"" Exit Terminal mode
+tnoremap kj <C-\><C-n>
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************

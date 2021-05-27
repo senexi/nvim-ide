@@ -26,6 +26,7 @@ RUN apt-get update -y && apt-get -y install vim \
     netcat \
     nmap \
     python3-pip \
+    python3-venv \
     yarn
 RUN wget -c https://dl.google.com/go/go1.16.4.linux-${ARCH3}.tar.gz -O - | tar -xz -C /usr/local && \
     mkdir /go && \
@@ -52,8 +53,10 @@ ENV PATH $GOBIN:$PATH
 ENV PATH $GOROOT/bin:$PATH
 WORKDIR ${HOME} 
 
+RUN pip3 install pylint
+
 COPY --chown=dev:0 init.vim ${HOME}/.config/nvim/
-RUN nvim --headless +PlugInstall  +qall && nvim --headless +"CocInstall coc-go coc-json coc-pyright" +qall
+RUN nvim --headless +PlugInstall  +qall && timeout 20 nvim --headless +"CocInstall coc-go coc-json coc-jedi" test.py || : && echo "huhu"
 COPY --chown=dev:0 coc-settings.json ${HOME}/.config/nvim
 
 # install protobuf support 
