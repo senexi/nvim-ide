@@ -9,7 +9,7 @@ ARG TERRAFORM_VERSION=0.15.4
 ARG ARCH=arm64
 USER root
 
-RUN apt install -y python3-pip apt-transport-https jsonnet
+RUN apt install -y apt-transport-https jsonnet
 
 #install terraform
 RUN wget --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH3}.zip

@@ -22,6 +22,10 @@ RUN apt-get update -y && apt-get -y install vim \
     neovim \
     zip \
     jq \
+    iputils-ping \
+    netcat \
+    nmap \
+    python3-pip \
     yarn
 RUN wget -c https://dl.google.com/go/go1.16.4.linux-${ARCH3}.tar.gz -O - | tar -xz -C /usr/local && \
     mkdir /go && \
@@ -49,7 +53,7 @@ ENV PATH $GOROOT/bin:$PATH
 WORKDIR ${HOME} 
 
 COPY --chown=dev:0 init.vim ${HOME}/.config/nvim/
-RUN nvim --headless +PlugInstall  +qall && nvim --headless +"CocInstall coc-go coc-json" +qall
+RUN nvim --headless +PlugInstall  +qall && nvim --headless +"CocInstall coc-go coc-json coc-pyright" +qall
 COPY --chown=dev:0 coc-settings.json ${HOME}/.config/nvim
 
 # install protobuf support 
