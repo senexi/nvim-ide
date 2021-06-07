@@ -5,8 +5,7 @@ ARG ARCH=amd64
 ARG ARCH2=x86_64
 ARG ARCH3
 
-ARG TERRAFORM_VERSION=0.15.4
-ARG ARCH=arm64
+ARG TERRAFORM_VERSION=0.15.5
 USER root
 
 RUN apt install -y apt-transport-https jsonnet
@@ -50,17 +49,26 @@ RUN curl -sLO https://github.com/argoproj/argo/releases/download/v3.0.3/argo-lin
     gunzip argo-linux-${ARCH3}.gz && \
     chmod +x argo-linux-${ARCH3} && \
     mv ./argo-linux-${ARCH3} /usr/bin/argo && \
-    echo "source <(argo completion zsh)" >> /home/dev/.zshrc
+    mkdir $HOME/.oh-my-zsh/custom/plugins/argo && \
+    argo completion zsh > $HOME/.oh-my-zsh/custom/plugins/argo/argo.plugin.zsh && \
+    echo "compdef _argo argo" >> /home/dev/.zshrc
 
 #install argocd
 ARG ARGOCD_VERSION=v2.0.1
 RUN if [ "$ARCH" = "amd64" ] ; then curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH3} && \
     chmod +x /usr/local/bin/argocd && \
-    echo "source <(argocd completion zsh)" >> /home/dev/.zshrc ; fi
+    mkdir $HOME/.oh-my-zsh/custom/plugins/argocd && \
+    argocd completion zsh > $HOME/.oh-my-zsh/custom/plugins/argocd/argocd.plugin.zsh && \
+    echo "compdef _argocd argocd" >> /home/dev/.zshrc ; fi
+
+#install kubeseal
+RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.16.0/kubeseal-linux-${ARCH3} -O kubeseal && \
+    install -m 755 kubeseal /usr/local/bin/kubeseal
 
 RUN rm /home/dev/*.zip
 COPY aliases /home/dev/.aliases
-RUN echo "source $HOME/.aliases" >> /home/dev/.zshrc
+RUN echo "source $HOME/.aliases" >> /home/dev/.zshrc && \
+    sed -i 's/plugins=(git)/plugins=(git argocd argo)/g' ~/.zshrc
 
 USER dev
 CMD "exec zsh"
