@@ -2,7 +2,7 @@
 ARCH=${1:-"amd64"}
 ARCH2=${2:-"x86_64"}
 ARCH3=$ARCH
-TARGET="go-ide"
+TARGET="vim-ide"
 BUILDER="docker"
 
 if ! command -v $BUILDER &> /dev/null

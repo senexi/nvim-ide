@@ -73,7 +73,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git argo argocd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -105,3 +105,10 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export SDKMAN_DIR="/home/dev/.sdkman"
+[[ -s "/home/dev/.sdkman/bin/sdkman-init.sh" ]] && source "/home/dev/.sdkman/bin/sdkman-init.sh"
+source $HOME/.aliases
+source <(helm completion zsh)
+source <(kubectl completion zsh)
+compdef _argo argo
+compdef _argocd argocd

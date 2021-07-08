@@ -2,7 +2,7 @@
 ARCH=${1:-"amd64"}
 REPO=${2:-"senexi"}
 
-TARGET="go-ide"
+TARGET="vim-ide"
 BUILDER="docker"
 
 if ! command -v $BUILDER &> /dev/null
