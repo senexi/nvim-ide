@@ -73,7 +73,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git argo argocd)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -110,5 +110,13 @@ export SDKMAN_DIR="/home/dev/.sdkman"
 source $HOME/.aliases
 source <(helm completion zsh)
 source <(kubectl completion zsh)
-compdef _argo argo
-compdef _argocd argocd
+# compdef _argo argo
+# compdef _argocd argocd
+
+export JAVA_HOME="$HOME/.sdkman/candidates/java/current"
+export GOROOT=/usr/local/go
+export GOPATH=/go
+export GOBIN=/go/bin
+export PATH=$GOBIN:$PATH
+export PATH=$GOROOT/bin:$PATH
+
