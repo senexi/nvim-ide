@@ -84,8 +84,8 @@ RUN curl -sL https://istio.io/downloadIstioctl | TARGET_ARCH=${ARCH2} sh - && \
     mv $HOME/.istioctl/bin/istioctl /usr/bin/istioctl
 
 #install kubeseal
-RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.16.0/kubeseal-linux-${ARCH3} -O kubeseal && \
-    install -m 755 kubeseal /usr/local/bin/kubeseal
+RUN if [ "$ARCH" = "amd64" ] ; then wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.16.0/kubeseal-linux-${ARCH3} -O kubeseal && \
+    install -m 755 kubeseal /usr/local/bin/kubeseal; fi
 
 USER dev
 ENV HOME /home/dev
@@ -128,7 +128,7 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 USER root
 
 #install argo
-RUN curl -sLO https://github.com/argoproj/argo/releases/download/v3.0.3/argo-linux-${ARCH3}.gz && \
+RUN curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.1.1/argo-linux-${ARCH3}.gz && \
     gunzip argo-linux-${ARCH3}.gz && \
     chmod +x argo-linux-${ARCH3} && \
     mv ./argo-linux-${ARCH3} /usr/bin/argo && \

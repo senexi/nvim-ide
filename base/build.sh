@@ -18,4 +18,9 @@ then
 fi
 
 echo "using arch $ARCH $ARCH2"
-$BUILDER build --format docker --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2 --build-arg ARCH3=$ARCH3 -t $TARGET:$ARCH-latest -f ./Dockerfile .
+if [ $ARCH = "arm64v8" ]
+then
+    $BUILDER build --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2 --build-arg ARCH3=$ARCH3 -t $TARGET:$ARCH-latest -f ./Dockerfile .
+else
+    $BUILDER build --format docker --build-arg ARCH=$ARCH --build-arg ARCH2=$ARCH2 --build-arg ARCH3=$ARCH3 -t $TARGET:$ARCH-latest -f ./Dockerfile .
+fi
