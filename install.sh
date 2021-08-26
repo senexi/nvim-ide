@@ -45,7 +45,7 @@ chmod -R 755 /usr/local/bin/include
 
 
 echo "install go"
-GO_VER=1.16.6
+GO_VER=1.17
 GO_URL=https://golang.org/dl/go${GO_VER}.linux-${ARCH}.tar.gz
 
 wget -c ${GO_URL} -O - | tar -xz -C /usr/local
@@ -62,7 +62,7 @@ go get -u github.com/cweill/gotests/...
 
 
 echo "install terraform"
-TERRAFORM_VERSION=1.0.3
+TERRAFORM_VERSION=1.0.5
 wget --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip
 unzip terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip 
 mv terraform /usr/local/bin/
@@ -100,7 +100,7 @@ fi
 
 
 echo "install argo"
-curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.1.1/argo-linux-${ARCH}.gz
+curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.1.8/argo-linux-${ARCH}.gz
 gunzip argo-linux-${ARCH}.gz
 chmod +x argo-linux-${ARCH}
 mv ./argo-linux-${ARCH} /usr/bin/argo
@@ -108,7 +108,7 @@ mv ./argo-linux-${ARCH} /usr/bin/argo
 # argo completion zsh > $HOME/.oh-my-zsh/custom/plugins/argo/argo.plugin.zsh
 
 echo "install argocd"
-ARGOCD_VERSION=v2.0.1
+ARGOCD_VERSION=v2.1.0
 if [ "$ARCH" = "amd64" ]  
 then 
     curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH}

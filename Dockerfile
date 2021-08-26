@@ -22,6 +22,7 @@ ENV GOPATH /go
 ENV GOBIN /go/bin
 ENV PATH $GOBIN:$PATH
 ENV PATH $GOROOT/bin:$PATH
+ENV GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 WORKDIR ${HOME} 
 
 COPY install_user.sh /tmp
