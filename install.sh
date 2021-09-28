@@ -58,7 +58,7 @@ mkdir -p /go/src /go/bin /go/pkg
 
 
 echo "install terraform"
-TERRAFORM_VERSION=1.0.5
+TERRAFORM_VERSION=1.0.7
 wget -q --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip
 unzip -qq terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip 
 mv terraform /usr/local/bin/
