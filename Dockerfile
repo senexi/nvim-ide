@@ -1,7 +1,7 @@
 # ARCH=arm64v8 or amd64
 ARG ARCH
 
-FROM ${ARCH}/ubuntu:groovy
+FROM ${ARCH}/ubuntu:hirsute
 
 # add dev user
 RUN adduser dev --disabled-password --gecos ""                          && \

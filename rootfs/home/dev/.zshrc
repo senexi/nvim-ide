@@ -119,4 +119,5 @@ export GOPATH=/go
 export GOBIN=/go/bin
 export PATH=$GOBIN:$PATH
 export PATH=$GOROOT/bin:$PATH
+export PATH=/home/dev/.local/bin:$PATH
 

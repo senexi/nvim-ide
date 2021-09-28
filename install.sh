@@ -24,7 +24,7 @@ export HOME=/home/dev
 
 echo "install node"
 curl -fsSL https://deb.nodesource.com/setup_current.x | bash - 
-apt-get install -y nodejs 
+apt-get install -q --no-install-recommends -y nodejs 
 npm install --global yarn
 npm install -g neovim
 
@@ -36,8 +36,8 @@ PB_URL=${PB_REL}/download/v${PB_VER}/${PB_FILE}
 
 PB_DEST=/tmp/protoc
 echo ${PB_URL} 
-wget ${PB_URL} -P ${PB_DEST}
-unzip ${PB_DEST}/${PB_FILE} -d ${PB_DEST}
+wget -q ${PB_URL} -P ${PB_DEST}
+unzip -qq ${PB_DEST}/${PB_FILE} -d ${PB_DEST}
 chmod +x ${PB_DEST}/bin/protoc
 mv ${PB_DEST}/bin/protoc /usr/local/bin
 mv ${PB_DEST}/include /usr/local/bin
@@ -47,45 +47,41 @@ chmod -R 755 /usr/local/bin/include
 echo "install go"
 GO_VER=1.17
 GO_URL=https://golang.org/dl/go${GO_VER}.linux-${ARCH}.tar.gz
-
-wget -c ${GO_URL} -O - | tar -xz -C /usr/local
+wget -q -c ${GO_URL} -O - | tar -xz -C /usr/local
 mkdir -p /go/src /go/bin /go/pkg
-chown -cR dev:0 /go
-chmod -R g+rwX /go
 
-
-echo "install go protobuf support" 
-go get -u google.golang.org/protobuf/cmd/protoc-gen-go
-go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
-go get -u github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc
-go get -u github.com/cweill/gotests/...
+#echo "install go protobuf support" 
+#go get -u google.golang.org/protobuf/cmd/protoc-gen-go
+#go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
+#go get -u github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc
+#go get -u github.com/cweill/gotests/...
 
 
 echo "install terraform"
 TERRAFORM_VERSION=1.0.5
-wget --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip
-unzip terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip 
+wget -q --progress=dot:mega https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip
+unzip -qq terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip 
 mv terraform /usr/local/bin/
 chmod +x /usr/local/bin/terraform 
 terraform --version
 
 
 echo "install aws cli"
-curl "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH2}.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-./aws/install
+#curl "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH2}.zip" -o "awscliv2.zip"
+#unzip -qq awscliv2.zip
+#./aws/install
+pip3 --no-cache-dir install --upgrade awscli
+
 
 echo "install kubectl"
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
-apt-get update
-apt-get install -y kubectl
+curl -sLO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 echo "install helm"
-curl https://baltocdn.com/helm/signing.asc | apt-key add - 
+curl -s https://baltocdn.com/helm/signing.asc | apt-key add - 
 echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-apt-get update
-apt-get install helm
+apt-get -q update
+apt-get install --no-install-recommends -q helm
 
 echo "install istioctl"
 curl -sL https://istio.io/downloadIstioctl | TARGET_ARCH=${ARCH2} sh -
@@ -94,7 +90,7 @@ mv $HOME/.istioctl/bin/istioctl /usr/bin/istioctl
 echo "install kubeseal"
 if [ "$ARCH" = "amd64" ]  
 then 
-    wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.16.0/kubeseal-linux-${ARCH} -O kubeseal
+    wget -q https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.16.0/kubeseal-linux-${ARCH} -O kubeseal
     install -m 755 kubeseal /usr/local/bin/kubeseal
 fi
 
@@ -122,5 +118,5 @@ echo "install pip packages"
 pip3 install pylint
 
 echo "set ownership for home/dev to user dev"
-chown -R dev:dev /home/dev 
-
+chown -R dev:0 /home/dev 
+chown -cR dev:0 /go && chmod -R g+rwX /go

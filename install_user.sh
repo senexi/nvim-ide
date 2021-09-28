@@ -7,8 +7,7 @@ export PATH=$GOROOT/bin:$PATH
 
 nvim --headless +PlugInstall  +qall && timeout 20 nvim --headless +"CocInstall coc-go coc-json coc-jedi" test.py || : && echo "huhu"
 
-pip3 install --user --upgrade neovim
-
+pip3 install -q --user --upgrade neovim azure-cli
 JAVA_VERSION="11.0.11-zulu"
 KOTLIN_VERSION="1.4.31"
 MAVEN_VERSION="3.6.3"
